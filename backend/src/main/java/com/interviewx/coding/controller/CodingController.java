@@ -14,10 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/coding")
 @RequiredArgsConstructor
-@CrossOrigin(origins = {
-    "http://localhost:5173", 
-    "https://interview-x-unl2-qyb122ut6-siddharth1718.vercel.app"
-})
+
 public class CodingController {
 
     private final CodingService codingService;
