@@ -4,14 +4,12 @@ import com.interviewx.auth.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -31,57 +29,53 @@ public class SecurityConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
-
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(
-                List.of("http://localhost:5173"));
+        // Update this list with your local port and your deployed Frontend URL
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:5173", 
+                "https://your-frontend-domain.vercel.app" // <-- ADD YOUR DEPLOYED FRONTEND URL HERE
+        ));
 
-        configuration.setAllowedMethods(
-                List.of("GET","POST","PUT","DELETE","OPTIONS"));
-
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
-
         configuration.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource source =
-                new UrlBasedCorsConfigurationSource();
-
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
 
         return source;
     }
 
-    
     @Bean
-    public SecurityFilterChain securityFilterChain(
-            HttpSecurity http) throws Exception {
-
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> {})
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
 
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(
-                                SessionCreationPolicy.STATELESS))
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authorizeHttpRequests(auth -> auth
-.requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        // 1. Let Admin endpoints remain protected
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+
+                        // 2. Allow Render's health checks, basic root path, and error dispatching
+                        .requestMatchers("/", "/error").permitAll()
+
+                        // 3. Your public API endpoints
                         .requestMatchers(
-    "/api/v1/auth/**",
-    "/api/v1/resume/**",
-    "/api/v1/companies/**",
-    "/uploads/**"
-).permitAll()
+                                "/api/v1/auth/**",
+                                "/api/v1/resume/**",
+                                "/api/v1/companies/**",
+                                "/uploads/**"
+                        ).permitAll()
 
-                       
-
-                        .anyRequest()
-                        .authenticated()
+                        // 4. Authenticate everything else
+                        .anyRequest().authenticated()
                 )
 
                 .formLogin(form -> form.disable())
-
                 .httpBasic(httpBasic -> httpBasic.disable())
 
                 .addFilterBefore(
