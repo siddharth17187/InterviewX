@@ -9,6 +9,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
+@CrossOrigin(origins = {
+    "http://localhost:5173", 
+    "https://interview-x-unl2-qyb122ut6-siddharth1718.vercel.app"
+})
 public class AdminController {
 
     private final AdminService adminService;

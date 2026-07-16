@@ -22,7 +22,10 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+    "http://localhost:5173", 
+    "https://interview-x-unl2-qyb122ut6-siddharth1718.vercel.app"
+})
 public class AuthController {
 
     private final AuthService authService;

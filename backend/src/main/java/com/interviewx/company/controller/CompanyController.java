@@ -15,7 +15,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/companies")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {
+    "http://localhost:5173", 
+    "https://interview-x-unl2-qyb122ut6-siddharth1718.vercel.app"
+})
 public class CompanyController {
 
     private final CompanyService companyService;
