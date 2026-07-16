@@ -47,7 +47,8 @@ export default function GoogleButton() {
         onError={() => {
           toast.error("Google Login Failed");
         }}
-        width="100%"
+        // Change it to a numeric pixel width (no % sign)
+width={350}
       />
     </div>
   );
