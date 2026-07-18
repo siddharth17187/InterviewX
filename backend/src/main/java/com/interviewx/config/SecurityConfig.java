@@ -58,7 +58,7 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
                         // 1. Let Admin endpoints remain protected
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
 
                         // 2. Allow Render's health checks, basic root path, and error dispatching
                         .requestMatchers("/", "/error").permitAll()
