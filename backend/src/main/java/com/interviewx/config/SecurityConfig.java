@@ -33,8 +33,8 @@ public class SecurityConfig {
 
         // Updated with your local port and your actual live production Frontend URL
         configuration.setAllowedOrigins(List.of(
-            "http://localhost:5173", 
-            "https://interview-x-unl2.vercel.app"
+    "http://localhost:5173" 
+            
         ));
 
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
