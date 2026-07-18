@@ -31,11 +31,11 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // Updated with your local port and your actual live production Frontend URL
         configuration.setAllowedOrigins(List.of(
-    "http://localhost:5173" 
-            
-        ));
+    "http://localhost:5173",
+    "https://interview-x-omega.vercel.app",
+    "https://interview-h7tzhjyfs-siddharth1718.vercel.app"
+));
 
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
